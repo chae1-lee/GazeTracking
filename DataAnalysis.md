@@ -1,6 +1,6 @@
 # Data Analysis
-## MPII Gaze
->https://www.mpi-inf.mpg.de/departments/computer-vision-and-machine-learning/research/gaze-based-human-computer-interaction/appearance-based-gaze-estimation-in-the-wild
+## 01. MPII Gaze
+> https://www.mpi-inf.mpg.de/departments/computer-vision-and-machine-learning/research/gaze-based-human-computer-interaction/appearance-based-gaze-estimation-in-the-wild
 
 구조: Data - Original<br>
 　　　　　- Normalized<br>
@@ -51,8 +51,8 @@ Sugano et al.[3]에서 원근 변환을 통해 크기 조정 및 회전을 취�
 
 ###### 잘린 눈 이미지 크기 (720 X 1280 px) -> Normalized eye patch image (36 X 60 px)
 
-## Gaze360
->http://gaze360.csail.mit.edu/
+## 02. Gaze360
+> http://gaze360.csail.mit.edu/
 
 - 실내 5곳(53명)과 실외 2곳(185명)에서 총 9회에 걸쳐 238명의 피험자를 수집 (총 1975588 frame)
 - 총 129K 훈련, 17K 검증 및 시선 주석이 있는 26K 테스트 이미지를 획득 
@@ -67,3 +67,43 @@ The dataset consists of
 - license
 - ```metadata.mat``` with annotations
 - 머리와 몸 부분이 잘린 JPEG images
+
+## 03. Gaze Capture
+> https://gazecapture.csail.mit.edu/
+
+### json 설명:
+- appleFace.json, appleLeftEye.json, appleRightEye.json
+  - left: 이미지의 오른쪽에 나타나는 피사체의 물리적인 왼쪽
+  - X, Y: bounding box의 왼쪽 상단 x, y 좌표 (pixel 단위)
+  - W, H: bounding box의 너비와 높이 (pixel 단위)
+  - IsValid: 실제 감지 여부, 1=감지, 0=감지되지 않음
+
+- dotInfo.json
+  - DotNum: 해당 프레임 동안 표시되는 점(0부터 시작)의 sequence 번호
+  - XPts, YPts: 화면 왼쪽 상단 점의 중심 위치 (포인트 단위, 이 단위는 screen.json 참조)
+  - XCam, YCam: 예측 공간에서 점의 중심 위치. 위치는 cm로 측정
+  - Time: 표시된 점이 화면에 나타난 경과 시간(초)
+
+- faceGrid.json: Apple face detection에서 생성된 "face grid"의 input feature. 25X25 grid
+  - X, Y: 왼쪽 상단 x, y 좌표
+  - W, H: face box의 너비와 높이
+  - IsValid: apple*.json의 IsValid 값과 동일
+
+- frames.json: frames 폴더에 있는 frame의 파일 이름. (info.json 참조)
+
+- info.json
+  - TotalFrames: 해당 주제의 총 프레임 수
+  - NumFaceDetections: 얼굴이 감지된 프레임 수
+  - NumEyeDetections: 눈이 감지된 프레임 수
+  - Dataset: "train", "val", or "test"
+  - DeviceName: 녹음에 사용된 장치의 이름
+
+- motion.json: 프레임이 녹화되는 동안 60Hz로 기록된 모션 데이터 스트림
+
+- screen.json
+  - H, W: 앱의 활성 화면 영역의 높이와 너비
+  - Orientation: The orientation of the interface, as described by the enumeration UIInterfaceOrientation, where:
+    1. portrait
+    2. portrait, upside down (iPad only)
+    3. landscape, with home button on the right
+    4. landscape, with home button on the left
