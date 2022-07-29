@@ -38,10 +38,17 @@ def loadData(path, is_train=True, train_ratio=0.6, test_ratio=0.2):
         train = np.array(contents.iloc[:cut_of_train])
         val = np.array(contents.iloc[cut_of_train:cut_of_test])
 
+        # 전체
         # train_X = train[:, 1:-2]
         # val_X = val[:, 1:-2]
-        train_X = np.concatenate((train[:, -8:-5], train[:, -4:-2]), axis=1)
-        val_X = np.concatenate((val[:, -8:-5], val[:, -4:-2]), axis=1)
+
+        # 3D target location(x, y, z), yaw, pitch
+        # train_X = np.concatenate((train[:, -8:-5], train[:, -4:-2]), axis=1)
+        # val_X = np.concatenate((val[:, -8:-5], val[:, -4:-2]), axis=1)
+
+        # 3D target location(x, y), pitch
+        train_X = np.concatenate((train[:, -8:-6], train[:, -3].reshape(len(train[:, -3]), 1)), axis=1)
+        val_X = np.concatenate((val[:, -8:-6], val[:, -3].reshape(len(val[:, -3]), 1)), axis=1)
 
         train_Y = train[:, -2:]
         val_Y = val[:, -2:]
@@ -51,10 +58,16 @@ def loadData(path, is_train=True, train_ratio=0.6, test_ratio=0.2):
     else:
         test = np.array(contents.iloc[cut_of_test:])
 
+        # 전체
         # test_X = test[:, 1:-2]
-        test_X = np.concatenate((test[:, -8:-5], test[:, -4:-2]), axis=1)
-        test_Y = test[:, -2:]
 
+        # 3D target location(x, y, z), yaw, pitch
+        # test_X = np.concatenate((test[:, -8:-5], test[:, -4:-2]), axis=1)
+
+        # 3D target location(x, y), pitch
+        test_X = np.concatenate((test[:, -8:-6], test[:, -3].reshape(len(test[:, -3]), 1)), axis=1)
+
+        test_Y = test[:, -2:]
         return test_X, test_Y
 
 
